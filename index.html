@@ -61,6 +61,67 @@
       box-shadow: 0 0 30px rgba(0, 216, 216, 0.15);
     }
 
+    #start-screen {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+
+    #start-screen h1 {
+      color: #00ffff;
+      font-size: clamp(26px, 7vw, 42px);
+      letter-spacing: 4px;
+      text-shadow: 4px 4px #d800d8;
+    }
+
+    #start-screen p {
+      color: #d8d800;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    #start-button {
+      min-width: 150px;
+      padding: 12px 18px;
+      border: 3px solid #00d800;
+      background: #001a00;
+      color: #00ff00;
+      font: bold 16px monospace;
+      cursor: pointer;
+    }
+
+    #start-button:active {
+      background: #00d800;
+      color: #000;
+    }
+
+    #exit-button {
+      position: fixed;
+      top: max(10px, env(safe-area-inset-top, 0px));
+      right: max(10px, env(safe-area-inset-right, 0px));
+      z-index: 100;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.72);
+      color: #fff;
+      font: bold 18px monospace;
+      cursor: pointer;
+    }
+
+    #exit-button:active {
+      background: #d80000;
+    }
+
     canvas {
       width: 100%;
       height: 100%;
@@ -182,6 +243,7 @@
 
   <!-- Reszponzív játék felület -->
   <div id="app-container">
+    <button id="exit-button" type="button" aria-label="Kilépés a teljes képernyőből">×</button>
     <!-- Bal oldal: Joystick zóna -->
     <div class="control-zone" id="joystick-zone">
       <div id="joystick-base">
@@ -192,6 +254,11 @@
     <!-- Közép: Játéktér -->
     <div id="game-frame">
       <canvas id="gameCanvas" width="256" height="192"></canvas>
+      <div id="start-screen">
+        <h1>JETPAC</h1>
+        <p>BUILD YOUR ROCKET<br />AND ESCAPE THE PLANET</p>
+        <button id="start-button" type="button">START GAME</button>
+      </div>
     </div>
 
     <!-- Jobb oldal: Tűzgomb -->

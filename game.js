@@ -141,7 +141,7 @@ const platforms = [
 ];
 const GROUND_Y = 172;
 
-let gameState = "PLAYING";
+let gameState = "START";
 let score = 0;
 let hiScore = 10000;
 let lives = 4;
@@ -198,6 +198,33 @@ let fireCooldown = 0;
 let explosions = [];
 
 const input = { left: false, right: false, thrust: false, fire: false };
+const startScreen = document.getElementById("start-screen");
+const startButton = document.getElementById("start-button");
+const exitButton = document.getElementById("exit-button");
+
+function startGame() {
+  initAudio();
+  resetGame();
+  startScreen.style.display = "none";
+  requestFullScreen();
+}
+
+function exitGame() {
+  input.left = false;
+  input.right = false;
+  input.thrust = false;
+  input.fire = false;
+  resetJoystick();
+  gameState = "START";
+  startScreen.style.display = "flex";
+  const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen;
+  if (exitFullscreen && (document.fullscreenElement || document.webkitFullscreenElement)) {
+    exitFullscreen.call(document).catch(() => {});
+  }
+}
+
+startButton.addEventListener("click", startGame);
+exitButton.addEventListener("click", exitGame);
 
 // --- ANALÓG JOYSTICK KEZELÉS ---
 const joystickZone = document.getElementById("joystick-zone");
@@ -238,7 +265,6 @@ function resetJoystick() {
 joystickZone.addEventListener("touchstart", (e) => {
   e.preventDefault();
   initAudio();
-  requestFullScreen();
   if (joystickTouchId === null) {
     const touch = e.changedTouches[0];
     joystickTouchId = touch.identifier;
@@ -294,7 +320,6 @@ const fireButton = document.getElementById("fire-button");
 function triggerFire(press) {
   if (press) {
     initAudio();
-    requestFullScreen();
     if (gameState === "GAME_OVER") {
       resetGame();
       return;
@@ -315,6 +340,10 @@ fireButton.addEventListener("mouseup", () => triggerFire(false));
 // Billentyűzet kezelés
 window.addEventListener("keydown", (e) => {
   initAudio();
+  if (gameState === "START" && (e.code === "Space" || e.code === "Enter")) {
+    startGame();
+    return;
+  }
   if (gameState === "GAME_OVER" && (e.code === "Space" || e.code === "KeyW")) {
     resetGame();
     return;
